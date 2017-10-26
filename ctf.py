@@ -7,7 +7,7 @@ import argparse
 import configparser
 from ruamel.yaml import YAML
 
-default = [".", "scripts", "skel"]
+default = [".", "scripts", "skel", ".git"]
 
 def updateYAML(chall_info):
 	chall_list = []
