@@ -6,13 +6,11 @@ fi
 
 NAME=$1
 NAME_LOWER=$(echo "${NAME}" | tr '[:upper:]' '[:lower:]')
-CONTAINER_ID=$(docker ps -a | grep "${NAME}" | awk '{print $1}')
-IMAGE_ID=$(docker images | grep "${NAME_LOWER}" | awk '{print $1}')
+CONTAINER_ID=$(docker ps -aq --filter name="${NAME_LOWER}")
 
-if [[ ${CONTAINER_ID} ]]; then
-	docker rm "${CONTAINER_ID}"
+if [[ "${CONTAINER_ID}" ]]; then
+	echo "Removing container id "${CONTAINER_ID}" with name ${NAME_LOWER}"
+	docker rm "${CONTAINER_ID}" --force
 fi
 
-if [[ ${IMAGE_ID} ]]; then
-	docker rmi --force "${NAME_LOWER}"
-fi
+docker rmi --force "${NAME_LOWER}"
