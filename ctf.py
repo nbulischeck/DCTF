@@ -6,6 +6,7 @@ import subprocess
 import argparse
 import configparser
 from ruamel.yaml import YAML
+from pathlib import Path
 
 default = [".", "scripts", "skel", ".git"]
 
@@ -41,20 +42,12 @@ def parseINI(config_list):
 			chall_info.append([name, port, c_type])
 		name, port, c_type = None, None, None
 
-	return chall_info	
+	return chall_info
 
 def getINIList():
-	config_list = []
-
-	for root, dirs, files in os.walk('.'):
-		for i, d in enumerate(dirs):
-			if d in default:
-				del dirs[i]
-		for f in files:
-			if f == 'config.ini':
-				config_list.append(os.path.join(root, f))
-
-	return config_list
+	defaults = set(default)
+	f = Path.cwd().glob("**/config.ini")
+	return (p for p in f if not defaults & set(p.parts))
 
 def update():
 	config_list = getINIList()
