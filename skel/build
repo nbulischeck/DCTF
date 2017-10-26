@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if ( groups | grep "docker" ); then
+	docker build -t __ctf__ "${DIR}"
+else
+	sudo docker build -t __ctf__ "${DIR}"
+fi

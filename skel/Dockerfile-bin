@@ -1,0 +1,43 @@
+FROM ubuntu:trusty
+
+RUN apt-get update && apt-get -y dist-upgrade
+RUN apt-get install -y lib32z1 xinetd
+#RUN apt-get install -y gcc # make
+#RUN apt-get install --reinstall make
+
+RUN useradd -m ctf
+
+WORKDIR /home/ctf
+
+# Without these, chroot fails to find the binary
+RUN cp -R /lib* /home/ctf
+RUN cp -R /usr/lib* /home/ctf
+
+RUN mkdir /home/ctf/dev
+RUN mknod /home/ctf/dev/null c 1 3
+RUN mknod /home/ctf/dev/zero c 1 5
+RUN mknod /home/ctf/dev/random c 1 8
+RUN mknod /home/ctf/dev/urandom c 1 9
+RUN chmod 666 /home/ctf/dev/*
+
+### Shell Functionality (e.g. system("cat flag");) ###
+RUN mkdir /home/ctf/bin
+RUN cp /bin/sh /home/ctf/bin
+RUN cp /bin/ls /home/ctf/bin
+RUN cp /bin/cat /home/ctf/bin
+
+COPY ./__ctf__.xinetd /etc/xinetd.d/__ctf__
+RUN echo "Blocked by ctf_xinetd" > /etc/banner_fail
+
+COPY ./start.sh /start.sh
+RUN chmod +x /start.sh
+
+COPY ./bin/ /home/ctf/
+#RUN make
+RUN chown -R root:ctf /home/ctf
+RUN find /home/ctf -maxdepth 1 -type f -print0 | xargs -0 chmod 311
+#RUN chmod 740 /home/ctf/flag
+
+CMD ["/start.sh"]
+
+EXPOSE __port__

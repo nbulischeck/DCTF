@@ -1,0 +1,10 @@
+FROM python:3.6.1
+MAINTAINER Nick Bulischeck <nbulisc@clemson.edu>
+
+RUN groupadd flaskgroup && useradd -m -g flaskgroup -s /bin/bash flask
+RUN mkdir -p /home/flask
+WORKDIR /home/flask
+COPY bin /home/flask/
+RUN pip install --no-cache-dir -r requirements.txt
+RUN chown -R flask:flaskgroup /home/flask
+CMD ["python", "app.py"]
