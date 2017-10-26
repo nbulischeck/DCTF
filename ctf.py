@@ -40,7 +40,6 @@ def parseINI(config_list):
 		c_type = config.get(section, "type")
 		if name and port and c_type:
 			chall_info.append([name, port, c_type])
-		name, port, c_type = None, None, None
 
 	return chall_info
 
