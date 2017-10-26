@@ -34,19 +34,14 @@ def parseINI(config_list):
 	config.read(config_list)
 
 	for section in config.sections():
-		for key in config[section]:
-			if key == "name":
-				name = config[section][key]
-			if key == "port":
-				port = config[section][key] 
-			if key == "type":
-				c_type = config[section][key] 
-			if name and port and c_type:
-				chall_info.append([name, port, c_type])
-				break
+		name = config.get(section, "name")
+		port = config.get(section, "port")
+		c_type = config.get(section, "type")
+		if name and port and c_type:
+			chall_info.append([name, port, c_type])
 		name, port, c_type = None, None, None
 
-	return chall_info
+	return chall_info	
 
 def getINIList():
 	config_list = []
