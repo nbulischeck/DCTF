@@ -19,9 +19,15 @@ Quickly building and bringing the CTF up is as simple as running a single comman
 
 `python ctf.py -bus`
 
-This builds the docker images, brings the CTF up using the newly generated `docker-compose.yml` file, and prints the status of the challenges.
+This builds the docker images, brings the CTF up using the newly generated `docker-compose.yml` file, and prints the status of the challenges. More information on this below.
 
-More information on this below.
+Connecting to `localhost:8010` with netcat, we can see that our binary is being served within the docker container on the specified port.
+
+![foo-bin](images/foo-bin.png)
+
+Navigating to `localhost:8011` with our browser, we can see that our flask app is running perfectly.
+
+![bar-web](images/bar-web.png)
 
 ## Usage
 
