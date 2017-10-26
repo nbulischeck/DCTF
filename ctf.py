@@ -81,12 +81,13 @@ def build():
 	for item in zip(chall_info, dirs):
 		chall, c_dir = item
 		name, port, c_type = chall
-		if c_type == "binary":
+		if c_type == "web":
+			subprocess.run(["./scripts/gen.sh", "-n", name,
+							"-p", port, "-d", c_dir, "-w"])			
+		else c_type == "web":
 			subprocess.run(["./scripts/gen.sh", "-n", name,
 							"-p", port, "-d", c_dir, "-f"])
-		elif c_type == "web":
-			subprocess.run(["./scripts/gen.sh", "-n", name,
-							"-p", port, "-d", c_dir, "-w"])
+
 		buildpath = ''.join(["./", name, "-build/build"])
 		subprocess.run([buildpath])
 
