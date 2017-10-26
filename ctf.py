@@ -49,7 +49,6 @@ def parseINI(config_list):
 	return chall_info
 
 def getINIList():
-	global default
 	config_list = []
 
 	for root, dirs, files in os.walk('.'):
@@ -68,7 +67,6 @@ def update():
 	updateYAML(chall_info)
 
 def remove():
-	global default
 	config_list = getINIList()
 	chall_info = parseINI(config_list)
 
@@ -86,7 +84,6 @@ def remove():
 	subprocess.run(["./scripts/remove.sh"])
 
 def build():
-	global default
 	config_list = getINIList()
 	chall_info = parseINI(config_list)
 
