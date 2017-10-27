@@ -1,0 +1,7 @@
+bar web challenge:
+  Name: Bar
+  Description: Web challenge example.
+  Type: web
+  Flag: FLAG{PLACEHOLDER_FLAG}
+  Points: 10
+  Port: 8011

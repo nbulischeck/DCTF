@@ -5,8 +5,9 @@ import sys
 import subprocess
 import argparse
 import configparser
-from ruamel.yaml import YAML
 from pathlib import Path
+from ruamel.yaml import YAML
+from collections import ChainMap
 
 default = [".", "scripts", "skel", ".git"]
 
@@ -28,29 +29,29 @@ def updateYAML(chall_info):
 	with open("docker-compose.yml", "w+") as config:
 		yaml.dump(dcconf, config)
 
-def parseINI(config_list):
+def parseYAML(config_list):
+	yaml = YAML()
 	chall_info = []
-	name, port, c_type = None, None, None
-	config = configparser.ConfigParser()
-	config.read(config_list)
-
-	for section in config.sections():
-		name = config.get(section, "name")
-		port = config.get(section, "port")
-		c_type = config.get(section, "type")
-		if name and port and c_type:
-			chall_info.append([name, port, c_type])
+	name, port, ctype = None, None, None
+	
+	configs = ChainMap(*[yaml.load(i) for i in config_list])
+	for challenge in configs.values():
+		name = challenge.get('Name')
+		port = challenge.get('Port')
+		ctype = challenge.get('Type')
+		if name and port and ctype:
+			chall_info.append((name, port, ctype))
 
 	return chall_info
 
-def getINIList():
+def getYAMLList():
 	defaults = set(default)
-	f = Path.cwd().glob("**/config.ini")
+	f = Path.cwd().glob("**/config.yml")
 	return (p for p in f if not defaults & set(p.parts))
 
 def update():
-	config_list = getINIList()
-	chall_info = parseINI(config_list)
+	config_list = getYAMLList()
+	chall_info = parseYAML(config_list)
 	updateYAML(chall_info)
 
 def remove():

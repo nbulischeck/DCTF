@@ -1,0 +1,7 @@
+foo bin challenge:
+  Name: Foo
+  Description: Binary challenge example.
+  Type: pwnable
+  Flag: FLAG{PLACEHOLDER_FLAG}
+  Points: 10
+  Port: 8010
