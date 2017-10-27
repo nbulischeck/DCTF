@@ -55,8 +55,8 @@ def update():
 	updateYAML(chall_info)
 
 def remove():
-	config_list = getINIList()
-	chall_info = parseINI(config_list)
+	config_list = getYAMLList()
+	chall_info = parseYAML(config_list)
 
 	for root, dirs, files in os.walk('.'):
 		dirs[:] = [d for d in dirs if d not in default]
@@ -72,8 +72,8 @@ def remove():
 	subprocess.run(["./scripts/remove.sh"])
 
 def build():
-	config_list = getINIList()
-	chall_info = parseINI(config_list)
+	config_list = getYAMLList()
+	chall_info = parseYAML(config_list)
 
 	for root, dirs, files in os.walk('.'):
 		dirs[:] = [d for d in dirs if d not in default]
@@ -84,10 +84,10 @@ def build():
 		name, port, c_type = chall
 		if c_type == "web":
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-							"-p", port, "-d", c_dir, "-w"])			
-		else c_type == "web":
+								"-p", str(port), "-d", c_dir, "-w"])			
+		else:
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-							"-p", port, "-d", c_dir, "-f"])
+								"-p", str(port), "-d", c_dir, "-f"])
 
 		buildpath = ''.join(["./", name, "-build/build"])
 		subprocess.run([buildpath])

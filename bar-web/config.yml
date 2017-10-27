@@ -1,5 +1,5 @@
-bar web challenge:
-  Name: Bar
+Bar Web Challenge:
+  Name: bar
   Description: Web challenge example.
   Type: web
   Flag: FLAG{PLACEHOLDER_FLAG}

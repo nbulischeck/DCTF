@@ -1,5 +1,5 @@
-foo bin challenge:
-  Name: Foo
+Foo Bin Challenge:
+  Name: foo
   Description: Binary challenge example.
   Type: pwnable
   Flag: FLAG{PLACEHOLDER_FLAG}
