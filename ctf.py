@@ -67,10 +67,15 @@ def remove():
 
 	for item in zip(chall_info, dirs):
 		chall, c_dir = item
-		name, port, c_type = chall
+		name, port, c_type, cdir = chall
 		subprocess.run(["./scripts/delete.sh", name])
 
 	subprocess.run(["./scripts/remove.sh"])
+
+def fly():
+	build()
+	update()
+	subprocess.run(["docker-compose", "up", "-d"])
 
 def build():
 	config_list = getYAMLList()
@@ -84,6 +89,8 @@ def build():
 		else:
 			subprocess.run(["./scripts/gen.sh", "-n", name,
 								"-p", str(port), "-d", cdir, "-f"])
+		buildpath = ''.join(["./", name, "-build/build"])
+		subprocess.run([buildpath])
 
 def main():
 	parser = argparse.ArgumentParser(description="Docker-based CTF Platform")
@@ -96,6 +103,9 @@ def main():
 						action="store_true")
 	state.add_argument("-d", "--down",
 						help="stop the CTF",
+						action="store_true")
+	parser.add_argument("-f", "--fly",
+						help="deploy new challenges on the fly",
 						action="store_true")
 	parser.add_argument("-s", "--status",
 						help="displays the status of the challenges",
@@ -120,6 +130,8 @@ def main():
 		subprocess.run(["docker-compose", "up", "-d"])
 	elif args.down:
 		subprocess.run(["docker-compose", "down"])
+	if args.fly:
+		fly()
 	if args.status:
 		subprocess.run(["docker-compose", "ps"])
 	if args.prune:
