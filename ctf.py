@@ -31,18 +31,19 @@ def updateYAML(chall_info):
 
 def parseYAML(config_list):
 	yaml = YAML()
-	chall_info = []
-	name, port, ctype = None, None, None
-	
-	configs = ChainMap(*[yaml.load(i) for i in config_list])
-	for challenge in configs.values():
-		name = challenge.get('Name')
-		port = challenge.get('Port')
-		ctype = challenge.get('Type')
-		if name and port and ctype:
-			chall_info.append((name, port, ctype))
+    
+	def load_file(p):
+		y = yaml.load(p)
+		for section in y:
+			y[section]['Path'] = p.parent
+		return y
 
-	return chall_info
+	configs = ChainMap(*[load_file(i) for i in config_list])
+
+	for c in configs.values():
+		result = c.get('Name'), c.get('Port'), c.get('Type'), c.get('Path')
+		if all(result):
+			yield result
 
 def getYAMLList():
 	defaults = set(default)
@@ -75,22 +76,14 @@ def build():
 	config_list = getYAMLList()
 	chall_info = parseYAML(config_list)
 
-	for root, dirs, files in os.walk('.'):
-		dirs[:] = [d for d in dirs if d not in default]
-		break
-
-	for item in zip(chall_info, dirs):
-		chall, c_dir = item
-		name, port, c_type = chall
-		if c_type == "web":
+	for chall in chall_info:
+		name, port, ctype, cdir = chall
+		if ctype == "web":
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-								"-p", str(port), "-d", c_dir, "-w"])			
+								"-p", str(port), "-d", cdir, "-w"])	
 		else:
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-								"-p", str(port), "-d", c_dir, "-f"])
-
-		buildpath = ''.join(["./", name, "-build/build"])
-		subprocess.run([buildpath])
+								"-p", str(port), "-d", cdir, "-f"])
 
 def main():
 	parser = argparse.ArgumentParser(description="Docker-based CTF Platform")
