@@ -17,7 +17,7 @@ def updateYAML(chall_info):
 	dcconf     = yaml.load("version: '3'\n\nservices:")
 
 	for chall in chall_info:
-		name, port, c_type = chall
+		name, port, c_type, cdir = chall
 		challenge = dict()
 		ports = ["{port}:{port}".format(port=port)]
 		challenge[name] = {'image': name.lower(), 'ports': ports}
