@@ -11,6 +11,17 @@ from collections import ChainMap
 
 default = [".", "scripts", "skel", ".git"]
 
+def platform(p):
+	ctfd_url = "https://github.com/CTFd/CTFd.git"
+	fbctf_url = "https://github.com/facebook/fbctf.git"
+
+	if p.lower() == "fbctf":
+		subprocess.run(["./fbctf.sh"])	
+	elif p.lower() == "ctfd":
+		subprocess.run(["git", "clone", ctfd_url])
+	else:
+		print(p.lower(), "platform not found.")
+
 def updateYAML(chall_info):
 	chall_list = []
 	yaml       = YAML()
@@ -113,9 +124,9 @@ def main():
 	parser.add_argument("-r", "--remove",
 						help="remove all ctf containers and images",
 						action="store_true")
-	parser.add_argument("-p", "--prune",
-						help="prune unused docker networks",
-						action="store_true")
+	parser.add_argument("--platform",
+						help="install ctf frontend [CTFd/FBCTF]",
+						action="store")
 	parser.add_argument("--update",
 						help="update the docker compose config",
 						action="store_true")
@@ -134,8 +145,8 @@ def main():
 		fly()
 	if args.status:
 		subprocess.run(["docker-compose", "ps"])
-	if args.prune:
-		subprocess.run(["docker", "network", "prune"])
+	if args.platform:
+		platform(args.platform)
 	if args.remove:
 		remove()
 
