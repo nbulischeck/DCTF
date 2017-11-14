@@ -32,17 +32,21 @@ Navigating to `localhost:8011` with our browser, we can see that our flask app i
 ## Usage
 
 ```
-usage: ctf.py [-h] [-b] [-u | -d] [-s] [-r] [-p] [--update]
+usage: ctf.py [-h] [-b] [-u | -d] [-f] [-s] [-r] [--platform PLATFORM]
+              [--update]
+
+Docker-based CTF Platform
 
 optional arguments:
-  -h, --help    show this help message and exit
-  -b, --build   build the docker images
-  -u, --up      start the CTF
-  -d, --down    stop the CTF
-  -s, --status  displays the status of the challenges
-  -r, --remove  remove all ctf containers and images
-  -p, --prune   prune unused docker networks
-  --update      update the docker compose config
+  -h, --help           show this help message and exit
+  -b, --build          build the docker images
+  -u, --up             start the CTF
+  -d, --down           stop the CTF
+  -f, --fly            deploy new challenges on the fly
+  -s, --status         displays the status of the challenges
+  -r, --remove         remove all ctf containers and images
+  --platform PLATFORM  install ctf frontend [CTFd/FBCTF]
+  --update             update the docker compose config
 ```
 
 ### Build
@@ -63,6 +67,10 @@ The `up` flag calls the `update` function to get an up to date list of all of th
 
 The `down` flag calls `docker-compose down`.
 
+### Fly
+
+The `fly` flag calls `build`, then `update`, and then `docker-compose up -d`. This is a quick and dirty solution without having to mess with figuring out what is up and what isn't.
+
 ### Status
 
 The `status` flag calls `docker-compose ps`.
@@ -73,74 +81,74 @@ The `remove` flag parses the INI files that are paired with every challenge and 
 
 Once all containers and images are removed, `remove` calls `./scripts/remove.sh` which removes all directories matching `*-build` in the main directory. After removing all build directories, it calls `docker network prune -f` to forcibly remove unused docker networks.
 
-### Prune
+### Platform
 
-The `prune` flag calls `docker network prune`.
+The `platform` flag is under construction. In the future, this flag will allow you to install specific CTF frontend platforms. Supported platforms will most likely by FBCTF, CTFd, and NIZKCTF.
 
 ### Update
 
 The `update` flag has no short option. It is used as a manual way of updating the `docker-compose.yml` file. It parses all INI files in the challenge directories and builds the `docker-compose.yml` file based on the name of the challenge and the ports it runs on.
 
-## config.ini
+## config.yml
 
-The `config.ini` file is a very important file. It is necessary to include one in every challenge folder. Without this, the platform doesn't know what to call your challenge or what port it runs on. The use of the `config.ini` file was to give the naming conventions of challenges as much leeway as possible.
+The `config.yml` file is a very important file. It is necessary to include one in every challenge folder. Without this, the platform doesn't know what to call your challenge or what port it runs on. The use of the `config.yml` file was to give the naming conventions of challenges as much leeway as possible.
 
-Below is the sample `config.ini` file for `foo-bin`:
+Below is the sample `config.yml` file for `foo-bin`:
 
 ```
-1. [Foo Binary Challenge]
-2. Name = foo
-3. Description = Binary challenge example.
-4. Category = pwnable
-5. Flag = FLAG{PLACEHOLDER_FLAG}
-6. Points = 10
-7. Port = 8010
-8. Type = binary
+1. Foo Bin Challenge:
+2.   Name: foo
+3.   Description: Binary challenge example.
+4.   Type: pwnable
+5.   Flag: FLAG{PLACEHOLDER_FLAG}
+6.   Points: 10
+7.   Port: 8010
 ```
 
-### Section Title - Line 1
+### Challenge Title - Line 1
 
-The section title can be anything. This is to help identify the challenge to the author. There is no limit as to what goes inside the section header as long as it remains within the two brackets.
+The challenge title can be anything. This is to help identify the challenge to the author.
 
 ### Name - Line 2
 
 The name of the challenge must be within `[A-Za-z0-9._-]`. This is a requirement per the Docker specification. Docker image names may not stray from this.
 
-**If there is a binary being served, it must be the same name.**
+> **Note:**
+> If there is a binary being served, it **must** be the same name.
 
 ### Description - Line 3
 
-The description can be anything. It is not parsed or used in any way, but it is there to help the challenge author describe the challenge or put additional information.
+The description can be anything. It is not parsed or used in any way, but it is there to help the challenge author describe the challenge or put additional information. May be used to in generating config files in the future when used with `--platform`.
 
 ### Category - Line 4
 
-The category can be anything. It is not parsed or used in any way, but it is recommended to use a typical CTF category i.e. Pwnable, Crypto, WebEx, etc.
+The category can be anything. It is not parsed or used in any way, but it is recommended to use a typical CTF category i.e. Pwnable, Crypto, WebEx, etc. May be used to in generating config files in the future when used with `--platform`.
 
 ### Flag - Line 5
 
-The flag is not required, but it is used to help easily identify the flag of the challenge.
+The flag is not required, but it is used to help easily identify the flag of the challenge. May be used to in generating config files in the future when used with `--platform`.
 
 ### Points - Line 6
 
-The points are not required, but it is used as a reference.
+The points are not required, but it is used as a reference. May be used to in generating config files in the future when used with `--platform`.
 
 ### Port - Line 7
 
-The port number is required. 
+The port number is required. This is the local port that your challenge will be served on.
 
 ### Type - Line 8
 
-The type of challenge is required. Currently this may either be `binary` or `web`. There are no other options. If it is not set as `binary` or `web`, the challenge will not be built!
+The type of challenge is required. Currently this may either be `binary` or `web`. There are no other options. If it is not set as `binary` or `web`, the challenge will not be built! May be used to in generating config files in the future when used with `--platform`.
 
-### Barebones `config.ini`
+### Barebones `config.yml`
 
-The most barebones `config.ini` would be as follows:
+The most barebones `config.yml` would be as follows:
 
 ```
-[Foo Binary Challenge]
-Name = foo
-Port = 8010
-Type = binary
+Foo Bin Challenge:
+  Name: foo
+  Type: pwnable
+  Port: 8010
 ```
 
 ## ./scripts/gen.sh
