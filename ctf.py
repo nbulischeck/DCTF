@@ -96,10 +96,10 @@ def build():
 		name, port, ctype, cdir = chall
 		if ctype == "web":
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-								"-p", str(port), "-d", cdir, "-w"])	
+								"-p", str(port), "-d", str(cdir), "-w"])	
 		else:
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-								"-p", str(port), "-d", cdir, "-f"])
+								"-p", str(port), "-d", str(cdir), "-f"])
 		buildpath = ''.join(["./", name, "-build/build"])
 		subprocess.run([buildpath])
 
