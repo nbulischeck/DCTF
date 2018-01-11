@@ -1,22 +1,22 @@
-#/usr/bin/env python3
+#/usr/bin/env python
 
 import os
 import sys
 import subprocess
 import argparse
 import configparser
-from pathlib import Path
+from pathlib import Path, PurePath
 from ruamel.yaml import YAML
 from collections import ChainMap
 
-default = [".", "scripts", "skel", ".git"]
+default = [".", "scripts", "skel", "images", ".git"]
 
 def platform(p):
-	ctfd_url = "https://github.com/CTFd/CTFd.git"
 	fbctf_url = "https://github.com/facebook/fbctf.git"
+	ctfd_url = "https://github.com/CTFd/CTFd.git"	
 
 	if p.lower() == "fbctf":
-		subprocess.run(["./fbctf.sh"])	
+		subprocess.run(["git", "clone", fbctf_url])	
 	elif p.lower() == "ctfd":
 		subprocess.run(["git", "clone", ctfd_url])
 	else:
@@ -52,9 +52,10 @@ def parseYAML(config_list):
 	configs = ChainMap(*[load_file(i) for i in config_list])
 
 	for c in configs.values():
-		result = c.get('Name'), c.get('Port'), c.get('Type'), c.get('Path')
-		if all(result):
-			yield result
+		if c.get('Serve') == True:
+			result = c.get('Name'), c.get('Port'), c.get('Type'), c.get('Path')
+			if all(result):
+				yield result
 
 def getYAMLList():
 	defaults = set(default)
@@ -96,10 +97,10 @@ def build():
 		name, port, ctype, cdir = chall
 		if ctype == "web":
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-								"-p", str(port), "-d", str(cdir), "-w"])	
+								"-p", str(port), "-d", cdir, "-w"])	
 		else:
 			subprocess.run(["./scripts/gen.sh", "-n", name,
-								"-p", str(port), "-d", str(cdir), "-f"])
+								"-p", str(port), "-d", cdir, "-f"])
 		buildpath = ''.join(["./", name, "-build/build"])
 		subprocess.run([buildpath])
 
