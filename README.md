@@ -103,6 +103,7 @@ Below is the sample `config.yml` file for `foo-bin`:
 5.   Flag: FLAG{PLACEHOLDER_FLAG}
 6.   Points: 10
 7.   Port: 8010
+8.   Serve: true
 ```
 
 ### Challenge Title - Line 1
@@ -120,9 +121,9 @@ The name of the challenge must be within `[A-Za-z0-9._-]`. This is a requirement
 
 The description can be anything. It is not parsed or used in any way, but it is there to help the challenge author describe the challenge or put additional information. May be used to in generating config files in the future when used with `--platform`.
 
-### Category - Line 4
+### Type - Line 4
 
-The category can be anything. It is not parsed or used in any way, but it is recommended to use a typical CTF category i.e. Pwnable, Crypto, WebEx, etc. May be used to in generating config files in the future when used with `--platform`.
+The type of challenge is required. Currently this may either be `binary` or `web`. There are no other options. If it is not set as `binary` or `web`, the challenge will not be built! May be used to in generating config files in the future when used with `--platform`.
 
 ### Flag - Line 5
 
@@ -136,9 +137,9 @@ The points are not required, but it is used as a reference. May be used to in ge
 
 The port number is required. This is the local port that your challenge will be served on.
 
-### Type - Line 8
+### Serve - Line 8
 
-The type of challenge is required. Currently this may either be `binary` or `web`. There are no other options. If it is not set as `binary` or `web`, the challenge will not be built! May be used to in generating config files in the future when used with `--platform`.
+Serve can either be 'true' or 'false'. This depends on whether or not you want the challenge to be run by Docker. This can be used to create multiple challenges under the same Docker container.
 
 ### Barebones `config.yml`
 
@@ -149,6 +150,7 @@ Foo Bin Challenge:
   Name: foo
   Type: pwnable
   Port: 8010
+  Serve: true
 ```
 
 ## ./scripts/gen.sh
