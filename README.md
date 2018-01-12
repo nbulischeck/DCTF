@@ -135,7 +135,7 @@ The points are not required, but it is used as a reference. May be used to in ge
 
 ### Port - Line 7
 
-The port number is required. This is the local port that your challenge will be served on.
+The port number is required **if you have serve set to true**. This is the local port that your challenge will be served on.
 
 ### Serve - Line 8
 
