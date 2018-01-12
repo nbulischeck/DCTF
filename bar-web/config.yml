@@ -5,3 +5,4 @@ Bar Web Challenge:
   Flag: FLAG{PLACEHOLDER_FLAG}
   Points: 10
   Port: 8011
+  Serve: true

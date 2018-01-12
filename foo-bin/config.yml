@@ -5,3 +5,4 @@ Foo Bin Challenge:
   Flag: FLAG{PLACEHOLDER_FLAG}
   Points: 10
   Port: 8010
+  Serve: true
