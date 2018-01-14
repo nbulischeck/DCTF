@@ -1,3 +1,4 @@
 ruamel.yaml==0.15.34
 docker==2.5.1
 docker-compose==1.16.1
+passlib==1.7.1

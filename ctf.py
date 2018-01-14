@@ -8,6 +8,7 @@ import configparser
 from pathlib import Path, PurePath
 from ruamel.yaml import YAML
 from collections import ChainMap
+from passlib.hash import bcrypt
 
 default = [".", "scripts", "skel", "images", ".git"]
 
