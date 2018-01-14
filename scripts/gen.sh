@@ -48,7 +48,7 @@ elif [[ ${PORT} != ?(-)+([0-9]) || ${PORT} -gt 65535 ]]; then
 fi
 
 NAME_LOWER=$(echo "${NAME}" | tr '[:upper:]' '[:lower:]')
-cp -R build-skel/ "${NAME}-build" && mkdir "${NAME}-build"/bin
+cp -R skel/ "${NAME}-build" && mkdir "${NAME}-build"/bin
 
 if [[ "${DIR}" ]]; then
 	if [[ -d "${DIR}" ]]; then
