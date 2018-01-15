@@ -79,11 +79,11 @@ Once all containers and images are removed, `remove` calls `./scripts/remove.sh`
 
 ### Platform
 
-The `platform` flag is under construction. In the future, this flag will allow you to install specific CTF frontend platforms. Supported platforms will most likely by FBCTF, CTFd, and NIZKCTF.
+The `platform` flag currently allows you to generate config files for FBCTF. Future plans will be to allow for CTFd and NIZKCTF.
 
 ### Update
 
-The `update` flag has no short option. It is used as a manual way of updating the `docker-compose.yml` file. It parses all INI files in the challenge directories and builds the `docker-compose.yml` file based on the name of the challenge and the ports it runs on.
+The `update` flag has no short option. It is used as a manual way of updating the `docker-compose.yml` file. It parses all YAML files in the challenge directories and builds the `docker-compose.yml` file based on the name of the challenge and the ports it runs on.
 
 ## config.yml
 
