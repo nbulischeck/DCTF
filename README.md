@@ -152,10 +152,10 @@ The most barebones `config.yml` would be as follows:
 
 ```
 Foo Bin Challenge:
-  Name: foo
-  Type: pwnable
-  Port: 8010
-  Serve: true
+  title: foo
+  category: pwnable
+  port: 8010
+  serve: true
 ```
 
 > **Note:**
