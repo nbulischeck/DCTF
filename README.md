@@ -51,13 +51,9 @@ optional arguments:
 
 ### Build
 
-The `build` flag parses the INI files that are paired with every challenge and runs the `./scripts/gen.sh` script with the proper arguments according to the type of the challenge.
+The `build` flag parses the YAML files that are paired with every challenge and runs the `./scripts/gen.sh` script with the proper arguments according to the type of the challenge.
 
 After the `gen.sh` script finishes, `build` calls the `build` script in the `skel` directory which builds the appropriate docker image.
-
-More info on `gen.sh` below.
-
-TBD: Make `build` pair with `up` to add new challenges on-the-fly.
 
 ### Up
 
