@@ -1,8 +1,9 @@
 Bar Web Challenge:
-  Name: bar
-  Description: Web challenge example.
-  Type: web
-  Flag: FLAG{PLACEHOLDER_FLAG}
-  Points: 10
-  Port: 8011
-  Serve: true
+  title: bar
+  description: Web challenge example.
+  category: web
+  flag: FLAG{PLACEHOLDER_FLAG}
+  points: 10
+  port: 8011
+  serve: true
+  hint: ""

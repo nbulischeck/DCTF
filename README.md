@@ -99,11 +99,12 @@ Below is the sample `config.yml` file for `foo-bin`:
 1. Foo Bin Challenge:
 2.   Name: foo
 3.   Description: Binary challenge example.
-4.   Type: pwnable
+4.   Category: pwnable
 5.   Flag: FLAG{PLACEHOLDER_FLAG}
 6.   Points: 10
 7.   Port: 8010
 8.   Serve: true
+9.   Hint: Just connect to the binary using netcat!
 ```
 
 ### Challenge Title - Line 1
@@ -121,7 +122,7 @@ The name of the challenge must be within `[A-Za-z0-9._-]`. This is a requirement
 
 The description can be anything. It is not parsed or used in any way, but it is there to help the challenge author describe the challenge or put additional information. May be used to in generating config files in the future when used with `--platform`.
 
-### Type - Line 4
+### Category - Line 4
 
 The type of challenge is required. Currently this may either be `binary` or `web`. There are no other options. If it is not set as `binary` or `web`, the challenge will not be built! May be used to in generating config files in the future when used with `--platform`.
 
@@ -140,6 +141,10 @@ The port number is required **if you have serve set to true**. This is the local
 ### Serve - Line 8
 
 Serve can either be 'true' or 'false'. This depends on whether or not you want the challenge to be run by Docker. This can be used to create multiple challenges under the same Docker container.
+
+### Hint - Line 9
+
+The hint is not required, but FBCTF and CTFd allow for hints to be given in challenges.
 
 ### Barebones `config.yml`
 

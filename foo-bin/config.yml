@@ -1,8 +1,9 @@
 Foo Bin Challenge:
-  Name: foo
-  Description: Binary challenge example.
-  Type: pwnable
-  Flag: FLAG{PLACEHOLDER_FLAG}
-  Points: 10
-  Port: 8010
-  Serve: true
+  title: foo
+  description: Binary challenge example.
+  category: pwnable
+  flag: FLAG{PLACEHOLDER_FLAG}
+  points: 10
+  port: 8010
+  serve: true
+  hint: ""

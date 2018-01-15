@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:xenial
 
 RUN apt-get update && apt-get -y dist-upgrade
 RUN apt-get install -y lib32z1 xinetd
