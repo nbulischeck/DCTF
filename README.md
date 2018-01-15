@@ -146,7 +146,7 @@ Serve can either be 'true' or 'false'. This depends on whether or not you want t
 
 The hint is required if you want to generate valid FBCTF configs. If your challenge does not need a hint, simply put two quotation marks.<sup>[1]</sup>
 
->[1] If you want to generate an FBCTF config file with `--platform`, this is **required**.
+<sup>**[1]**</sup> If you want to generate an FBCTF config file with `--platform`, this is **required**.
 
 ### Barebones `config.yml`
 
