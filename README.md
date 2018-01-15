@@ -113,30 +113,30 @@ The challenge title can be anything. This is to help identify the challenge to t
 
 ### Title - Line 2
 
-The name of the challenge must be within `[A-Za-z0-9._-]`. This is a requirement per the Docker specification. Docker image names may not stray from this.
+The title of the challenge must be within `[A-Za-z0-9._-]`. This is a requirement per the Docker specification. Docker image names may not stray from this.<sup>[1]</sup>
 
 > **Note:**
 > If there is a binary being served, it **must** be the same name.
 
 ### Description - Line 3
 
-The description can be anything. It is not parsed or used in any way, but it is there to help the challenge author describe the challenge or put additional information. May be used to in generating config files in the future when used with `--platform`.
+The description can be anything. It is only used when generating FBCTF config files.<sup>[1]</sup>
 
 ### Category - Line 4
 
-The type of challenge is required. Currently this may either be `binary` or `web`. There are no other options. If it is not set as `binary` or `web`, the challenge will not be built! May be used to in generating config files in the future when used with `--platform`.
+The type of challenge is required. There is one special challenge category that is `web`. If the category of the challenge is `web`, then the platform will look for a file called `app.py` in the root of the challenge folder. This is used to serve a Flask website. Everything else (`binary`, `crypto`, `re`, etc.) will be treated as a binary challenge.<sup>[1]</sup>
 
 ### Flag - Line 5
 
-The flag is not required, but it is used to help easily identify the flag of the challenge. May be used to in generating config files in the future when used with `--platform`.
+The flag is not required, but it is used to help easily identify the flag of the challenge.<sup>[1]</sup>
 
 ### Points - Line 6
 
-The points are not required, but it is used as a reference. May be used to in generating config files in the future when used with `--platform`.
+The points are not required, but it is used as a reference.<sup>[1]</sup>
 
 ### Port - Line 7
 
-The port number is required **if you have serve set to true**. This is the local port that your challenge will be served on.
+The port number is required **if you have serve set to true**. This is the local port that your challenge will be served on.<sup>[1]</sup>
 
 ### Serve - Line 8
 
@@ -144,7 +144,9 @@ Serve can either be 'true' or 'false'. This depends on whether or not you want t
 
 ### Hint - Line 9
 
-The hint is required if you want to generate valid FBCTF configs. If your challenge does not need a hint, simply put two quotation marks.
+The hint is required if you want to generate valid FBCTF configs. If your challenge does not need a hint, simply put two quotation marks.<sup>[1]</sup>
+
+>[1] If you want to generate an FBCTF config file with `--platform`, this is **required**.
 
 ### Barebones `config.yml`
 
