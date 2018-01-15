@@ -97,21 +97,21 @@ Below is the sample `config.yml` file for `foo-bin`:
 
 ```
 1. Foo Bin Challenge:
-2.   Name: foo
-3.   Description: Binary challenge example.
-4.   Category: pwnable
-5.   Flag: FLAG{PLACEHOLDER_FLAG}
-6.   Points: 10
-7.   Port: 8010
-8.   Serve: true
-9.   Hint: Just connect to the binary using netcat!
+2.   title: foo
+3.   description: Binary challenge example.
+4.   category: pwnable
+5.   flag: FLAG{PLACEHOLDER_FLAG}
+6.   points: 10
+7.   port: 8010
+8.   serve: true
+9.   hint: ""
 ```
 
 ### Challenge Title - Line 1
 
 The challenge title can be anything. This is to help identify the challenge to the author.
 
-### Name - Line 2
+### Title - Line 2
 
 The name of the challenge must be within `[A-Za-z0-9._-]`. This is a requirement per the Docker specification. Docker image names may not stray from this.
 
@@ -144,7 +144,7 @@ Serve can either be 'true' or 'false'. This depends on whether or not you want t
 
 ### Hint - Line 9
 
-The hint is not required, but FBCTF and CTFd allow for hints to be given in challenges.
+The hint is required if you want to generate valid FBCTF configs. If your challenge does not need a hint, simply put two quotation marks.
 
 ### Barebones `config.yml`
 
@@ -157,3 +157,6 @@ Foo Bin Challenge:
   Port: 8010
   Serve: true
 ```
+
+> **Note:**
+> This is not compliant with FBCTF as it does not have a hint field, however the DCTF platform will be able to handle the creation of a docker container to serve this challenge.
