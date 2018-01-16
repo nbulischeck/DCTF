@@ -4,6 +4,6 @@ Foo Bin Challenge:
   category: pwnable
   flag: FLAG{PLACEHOLDER_FLAG}
   points: 10
-  port: 8010
+  port: 10000
   serve: true
   hint: ""

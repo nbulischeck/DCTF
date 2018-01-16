@@ -4,6 +4,6 @@ Bar Web Challenge:
   category: web
   flag: FLAG{PLACEHOLDER_FLAG}
   points: 10
-  port: 8011
+  port: 10001
   serve: true
   hint: ""
