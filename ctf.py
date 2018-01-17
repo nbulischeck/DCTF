@@ -15,7 +15,7 @@ default = [".", "scripts", "skel", "images", ".git"]
 
 def fbctf_categories():
 	config_list = getYAMLList()
-	chall_info = parseYAML(config_list, "config")
+	chall_info = function2(config_list)
 	categories = {
 		"categories":[
 			{"category": "None", "protected": True},
@@ -36,7 +36,7 @@ def fbctf_categories():
 
 def fbctf_levels():
 	config_list = getYAMLList()
-	chall_info = parseYAML(config_list, "config")
+	chall_info = function2(config_list)
 	levels = {"levels": []}
 
 	with open("./configs/assets/iso.txt") as f:
@@ -87,7 +87,22 @@ def updateYAML(chall_info):
 	with open("docker-compose.yml", "w+") as config:
 		yaml.dump(dcconf, config)
 
-def parseYAML(config_list, reason):
+def getDockerConfig(config_list):
+	configs = parseYAML(config_list)
+	for c in configs.values():
+		if c.get('serve') == True:
+			result = c.get('title'), c.get('port'), c.get('category'), c.get('path')
+			if all(result):
+				yield result
+
+def getFBCTFConfig(config_list):
+	configs = ParseYAML(config_list)
+	for c in configs.values():
+		for i in ["path", "serve"]:
+			c.pop(i)
+		yield c
+
+def parseYAML(config_list):
 	yaml = YAML()
 
 	def load_file(p):
@@ -98,19 +113,6 @@ def parseYAML(config_list, reason):
 
 	configs = ChainMap(*[load_file(i) for i in config_list])
 
-	if reason == "docker":
-		for c in configs.values():
-			if c.get('serve') == True:
-				result = c.get('title'), c.get('port'), c.get('category'), c.get('path')
-				if all(result):
-					yield result
-
-	elif reason == "config":
-		for c in configs.values():
-			for i in ["path", "serve"]:
-				c.pop(i)
-			yield c
-
 def getYAMLList():
 	defaults = set(default)
 	f = Path.cwd().glob("**/config.yml")
@@ -118,12 +120,12 @@ def getYAMLList():
 
 def update():
 	config_list = getYAMLList()
-	chall_info = parseYAML(config_list, "docker")
+	chall_info = function(config_list)
 	updateYAML(chall_info)
 
 def remove():
 	config_list = getYAMLList()
-	chall_info = parseYAML(config_list, "docker")
+	chall_info = function(config_list)
 
 	for root, dirs, files in os.walk('.'):
 		dirs[:] = [d for d in dirs if d not in default]
@@ -139,7 +141,7 @@ def remove():
 
 def build():
 	config_list = getYAMLList()
-	chall_info = parseYAML(config_list, "docker")
+	chall_info = function(config_list)
 
 	for chall in chall_info:
 		name, port, ctype, cdir = chall
