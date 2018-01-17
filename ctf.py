@@ -15,7 +15,7 @@ default = [".", "scripts", "skel", "images", ".git"]
 
 def fbctf_categories():
 	config_list = getYAMLList()
-	chall_info = function2(config_list)
+	chall_info = getFBCTFConfig(config_list)
 	categories = {
 		"categories":[
 			{"category": "None", "protected": True},
@@ -36,7 +36,7 @@ def fbctf_categories():
 
 def fbctf_levels():
 	config_list = getYAMLList()
-	chall_info = function2(config_list)
+	chall_info = getFBCTFConfig(config_list)
 	levels = {"levels": []}
 
 	with open("./configs/assets/iso.txt") as f:
@@ -120,12 +120,12 @@ def getYAMLList():
 
 def update():
 	config_list = getYAMLList()
-	chall_info = function(config_list)
+	chall_info = getDockerConfig(config_list)
 	updateYAML(chall_info)
 
 def remove():
 	config_list = getYAMLList()
-	chall_info = function(config_list)
+	chall_info = getDockerConfig(config_list)
 
 	for root, dirs, files in os.walk('.'):
 		dirs[:] = [d for d in dirs if d not in default]
@@ -141,7 +141,7 @@ def remove():
 
 def build():
 	config_list = getYAMLList()
-	chall_info = function(config_list)
+	chall_info = getDockerConfig(config_list)
 
 	for chall in chall_info:
 		name, port, ctype, cdir = chall
