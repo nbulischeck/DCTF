@@ -96,7 +96,7 @@ def getDockerConfig(config_list):
 				yield result
 
 def getFBCTFConfig(config_list):
-	configs = ParseYAML(config_list)
+	configs = parseYAML(config_list)
 	for c in configs.values():
 		for i in ["path", "serve"]:
 			c.pop(i)
@@ -112,6 +112,7 @@ def parseYAML(config_list):
 		return y
 
 	configs = ChainMap(*[load_file(i) for i in config_list])
+	return configs
 
 def getYAMLList():
 	defaults = set(default)
@@ -196,8 +197,6 @@ def main():
 		subprocess.run(["docker-compose", "up", "-d"])
 	elif args.down:
 		subprocess.run(["docker-compose", "down"])
-	if args.fly:
-		fly()
 	if args.status:
 		subprocess.run(["docker-compose", "ps"])
 	if args.platform:
