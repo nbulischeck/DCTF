@@ -16,19 +16,19 @@ default = [".", "scripts", "skel", "images", ".git"]
 def fbctf_categories():
 	config_list = getYAMLList()
 	chall_info = parseYAML(config_list, "config")
-	categories = dict({
+	categories = {
 		"categories":[
 			{"category": "None", "protected": True},
 			{"category": "Quiz", "protected": True}
 		]
-	})
+	}
 	cat_list = []
 	for c in chall_info:
 		cat = c.get("category")
 		if cat not in cat_list:
 			cat_list.append(cat)
 	for i in cat_list:
-		cat = dict({"category": i, "protected": False})
+		cat = {"category": i, "protected": False}
 		categories["categories"].append(cat)
 
 	with open("./configs/fbctf_categories.json", "w+") as config:
@@ -37,13 +37,13 @@ def fbctf_categories():
 def fbctf_levels():
 	config_list = getYAMLList()
 	chall_info = parseYAML(config_list, "config")
-	levels = dict({"levels":[]})
+	levels = {"levels": []}
 
 	with open("./configs/assets/iso.txt") as f:
 		iso = [line.rstrip() for line in f]
 
 	for c, i in zip(chall_info, iso):
-		t = dict({
+		defaults = {
 			"type": "flag",
 			"active": False,
 			"entity_iso_code": i,
@@ -53,10 +53,10 @@ def fbctf_levels():
 			"bonus_dec": 0,
 			"bonus_fix": 0,
 			"penalty": 0
-		})
+		}
 		c['description'] += "\nPort: " + str(c['port'])
 		c.pop("port")
-		c.update(t)
+		c.update(defaults)
 		levels["levels"].append(c)
 
 	with open("./configs/fbctf_levels.json", "w+") as config:
@@ -72,7 +72,7 @@ def platform(p):
 def updateYAML(chall_info):
 	chall_list = []
 	yaml       = YAML()
-	dcconf     = yaml.load("version: '3'\n\nservices:")
+	dcconf     = {"version": '3', "services": None}
 
 	for chall in chall_info:
 		name, port, c_type, cdir = chall
@@ -131,17 +131,11 @@ def remove():
 
 	subprocess.run(["docker-compose", "stop"])
 
-	for item in zip(chall_info, dirs):
-		chall, c_dir = item
-		name, port, c_type, cdir = chall
+	for challenge, challenge_dir in zip(chall_info, dirs):
+		name, port, c_type = chall
 		subprocess.run(["./scripts/delete.sh", name])
 
 	subprocess.run(["./scripts/remove.sh"])
-
-def fly():
-	build()
-	update()
-	subprocess.run(["docker-compose", "up", "-d"])
 
 def build():
 	config_list = getYAMLList()
@@ -158,7 +152,7 @@ def build():
 		buildpath = ''.join(["./", name, "-build/build"])
 		subprocess.run([buildpath])
 
-def main():
+def parse_args():
 	parser = argparse.ArgumentParser(description="Docker-based CTF Platform")
 	state = parser.add_mutually_exclusive_group()
 	parser.add_argument("-b", "--build",
@@ -170,9 +164,6 @@ def main():
 	state.add_argument("-d", "--down",
 						help="stop the CTF",
 						action="store_true")
-	parser.add_argument("-f", "--fly",
-						help="deploy new challenges on the fly",
-						action="store_true")
 	parser.add_argument("-s", "--status",
 						help="displays the status of the challenges",
 						action="store_true")
@@ -180,12 +171,19 @@ def main():
 						help="remove all ctf containers and images",
 						action="store_true")
 	parser.add_argument("--platform",
-						help="install ctf frontend [CTFd/FBCTF]",
-						action="store")
+						help="generate frontend config",
+						choices=["fbctf", "ctfd"])
 	parser.add_argument("--update",
 						help="update the docker compose config",
 						action="store_true")
-	args = parser.parse_args()
+
+	if len(sys.argv[1:]) == 0:
+		parser.print_help()
+
+	return parser.parse_args()
+
+def main():
+	args = parse_args()
 
 	if args.update:
 		update()
@@ -204,9 +202,6 @@ def main():
 		platform(args.platform)
 	if args.remove:
 		remove()
-
-	if len(sys.argv[1:]) == 0:
-		parser.print_help()
 
 if __name__ == "__main__":
 	main()
