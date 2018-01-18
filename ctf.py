@@ -11,7 +11,7 @@ from pathlib import Path, PurePath
 from ruamel.yaml import YAML
 from collections import ChainMap
 
-default = [".", "scripts", "skel", "images", ".git"]
+default = [".", "configs", "scripts", "skel", "images", ".git"]
 
 def fbctf_categories():
 	config_list = getYAMLList()
@@ -128,14 +128,10 @@ def remove():
 	config_list = getYAMLList()
 	chall_info = getDockerConfig(config_list)
 
-	for root, dirs, files in os.walk('.'):
-		dirs[:] = [d for d in dirs if d not in default]
-		break
-
 	subprocess.run(["docker-compose", "stop"])
 
-	for challenge, challenge_dir in zip(chall_info, dirs):
-		name, port, c_type = chall
+	for challenge in chall_info:
+		name, port, category, path = challenge
 		subprocess.run(["./scripts/delete.sh", name])
 
 	subprocess.run(["./scripts/remove.sh"])
