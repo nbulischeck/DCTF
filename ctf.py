@@ -142,7 +142,7 @@ def build():
 
 	for chall in chall_info:
 		name, port, ctype, cdir = chall
-		if ctype == "web":
+		if "web" in ctype:
 			subprocess.run(["./scripts/gen.sh", "-n", name,
 								"-p", str(port), "-d", cdir, "-w"])	
 		else:
