@@ -24,7 +24,7 @@ def fbctf_categories():
 	}
 	cat_list = []
 	for c in chall_info:
-		cat = c.get("category")
+		cat = c.get("category").split("-")[0]
 		if cat not in cat_list:
 			cat_list.append(cat)
 	for i in cat_list:
@@ -91,7 +91,7 @@ def getDockerConfig(config_list):
 	configs = parseYAML(config_list)
 	for c in configs.values():
 		if c.get('serve') == True:
-			result = c.get('title'), c.get('port'), c.get('category'), c.get('path')
+			result = c.get('title'), c.get('port'), c.get('category').split("-")[0], c.get('path')
 			if all(result):
 				yield result
 
