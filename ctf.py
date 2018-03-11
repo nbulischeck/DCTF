@@ -91,7 +91,7 @@ def getDockerConfig(config_list):
 	configs = parseYAML(config_list)
 	for c in configs.values():
 		if c.get('serve') == True:
-			result = c.get('title'), c.get('port'), c.get('category').split("-")[0], c.get('path')
+			result = c.get('title'), c.get('port'), c.get('category'), c.get('path')
 			if all(result):
 				yield result
 
